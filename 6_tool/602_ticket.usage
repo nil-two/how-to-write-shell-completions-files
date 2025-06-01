@@ -1,0 +1,6 @@
+<STATUS> ::= ( open | closed ) ;
+<TICKET_ID> ::= {{{ ticket list -f '$id' }}} ;
+<EDIT_OPTION> ::= (-h | --help)
+                | (-s <STATUS> | --status=<STATUS>) 
+                | (-t <TITLE> | --title=<TITLE>) ;
+ticket edit [<EDIT_OPTION>]... <TICKET_ID> ;

@@ -1,0 +1,10 @@
+flag "-h --help" long_help "show help" global=#true
+
+cmd "edit" {
+  long_help "edit a ticket"
+  flag "-s --status <status>" { choices "open" "closed" }
+  flag "-t --title <title>"
+  arg "<ticket_id>"
+}
+
+complete "ticket_id" run="ticket list -f '$id'"
