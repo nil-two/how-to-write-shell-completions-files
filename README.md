@@ -19,21 +19,14 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
 後続処理でCOMPREPLYが上書きされてしまい、補完候補にauto、always、neverが入らない状態になっていました。
 そのため、後続処理でCOMPREPLYに値を入れる可能性がある箇所については、COMPREPLYに値を入れてすぐreturnする必要がありました。
 
-```
-  case $prev in
-    -c|--color)
-      COMPREPLY=( $(compgen -W 'auto always never' -- "$cur") )
-      ;;
-  esac
-  $split && return
-↓
-  case $prev in
-    -c|--color)
-      COMPREPLY=( $(compgen -W 'auto always never' -- "$cur") )
-      return
-      ;;
-  esac
-  $split && return
+```diff
+   case $prev in
+     -c|--color)
+       COMPREPLY=( $(compgen -W 'auto always never' -- "$cur") )
++      return
+       ;;
+   esac
+   $split && return
 ```
 
 ### 2\_bash/203\_ticket.bash
@@ -43,21 +36,14 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
 -s、--statusの後はopen、closed、allが補完候補に表示されないようになっていました。
 同じくCOMPREPLYに絞り込み済み補完候補を入れてすぐreturnするように修正しています。
 
-```
-          case $prev in
-            -s|--status)
-              COMPREPLY=( $(compgen -W 'open closed' -- "$cur") )
-              ;;
-          esac
-          $split && return
-↓
-          case $prev in
-            -s|--status)
-              COMPREPLY=( $(compgen -W 'open closed' -- "$cur") )
-              return
-              ;;
-          esac
-          $split && return
+```diff
+           case $prev in
+             -s|--status)
+               COMPREPLY=( $(compgen -W 'open closed' -- "$cur") )
++              return
+               ;;
+           esac
+           $split && return
 ```
 
 ### 4\_fish/403\_ticket.fish
@@ -65,8 +51,7 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
 ticket editのオプションの-s、--statusの補完候補をopen、closed、allに修正しています。
 修正前は補完候補からallが抜けており、補完候補がopen、closedだけになっていました。
 
-```
-complete -c ticket -n '__fish_seen_subcommand_from list' -s s -l status -xa 'open closed' -d 'Ticket status'
-↓
-complete -c ticket -n '__fish_seen_subcommand_from list' -s s -l status -xa 'open closed all' -d 'Ticket status'
+```diff
+- complete -c ticket -n '__fish_seen_subcommand_from list' -s s -l status -xa 'open closed' -d 'Ticket status'
++ complete -c ticket -n '__fish_seen_subcommand_from list' -s s -l status -xa 'open closed all' -d 'Ticket status'
 ```
