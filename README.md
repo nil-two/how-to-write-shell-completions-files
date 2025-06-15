@@ -23,7 +23,6 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
   case $prev in
     -c|--color)
       COMPREPLY=( $(compgen -W 'auto always never' -- "$cur") )
-      return
       ;;
   esac
   $split && return
@@ -31,6 +30,7 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
   case $prev in
     -c|--color)
       COMPREPLY=( $(compgen -W 'auto always never' -- "$cur") )
+      return
       ;;
   esac
   $split && return
