@@ -43,6 +43,23 @@ COMPREPLYに絞り込み済み補完候補を入れてすぐreturnするよう�
 -s、--statusの後はopen、closed、allが補完候補に表示されないようになっていました。
 同じくCOMPREPLYに絞り込み済み補完候補を入れてすぐreturnするように修正しています。
 
+```
+          case $prev in
+            -s|--status)
+              COMPREPLY=( $(compgen -W 'open closed' -- "$cur") )
+              ;;
+          esac
+          $split && return
+↓
+          case $prev in
+            -s|--status)
+              COMPREPLY=( $(compgen -W 'open closed' -- "$cur") )
+              return
+              ;;
+          esac
+          $split && return
+```
+
 ### 4\_fish/403\_ticket.fish
 
 ticket editのオプションの-s、--statusの補完候補をopen、closed、allに修正しています。
